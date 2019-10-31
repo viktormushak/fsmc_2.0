@@ -1,0 +1,2 @@
+include ':app'
+rootProject.name='FSMC 2.0'
