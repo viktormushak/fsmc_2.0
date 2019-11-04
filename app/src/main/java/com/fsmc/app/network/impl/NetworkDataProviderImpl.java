@@ -21,7 +21,6 @@ import java.util.List;
 public class NetworkDataProviderImpl implements NetworkDataProvider {
 
     private static final String BASE_URL = "http://91.226.253.178:6128";
-//    private static final String BASE_URL = "http://192.168.0.101:6128";
     private static final int CACHE_SIZE = 1024 * 1024;
     private Context context;
     private Cache cache;

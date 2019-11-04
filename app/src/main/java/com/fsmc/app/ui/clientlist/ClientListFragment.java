@@ -77,7 +77,6 @@ public class ClientListFragment extends RecyclerViewFragment {
                     return clients.size();
                 }
             });
-//            viewModel.loadClientDetailsList();
             inProgress(false);
         });
         viewModel.loadClientList(company);
