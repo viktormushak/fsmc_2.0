@@ -67,7 +67,7 @@ public class ClientListFragment extends RecyclerViewFragment {
                     Client client = clients.get(position);
                     ((TextView) holder.itemView.findViewById(R.id.client_item_rate)).setText(String.valueOf(client.getRate()));
                     ((TextView) holder.itemView.findViewById(R.id.client_item_name)).setText(client.getName());
-                    ((TextView) holder.itemView.findViewById(R.id.client_item_score)).setText(String.valueOf(client.getTotalScore()));
+                    ((TextView) holder.itemView.findViewById(R.id.client_item_score)).setText(getString( R.string.item_score, client.getTotalScore()));
                     ((TextView) holder.itemView.findViewById(R.id.client_item_address)).setText(client.getAddress());
                     holder.itemView.setOnClickListener(view -> navigator.navigateToFragment(ClientDetailsFragment.newInstance(client, navigator)));
                 }
@@ -77,10 +77,11 @@ public class ClientListFragment extends RecyclerViewFragment {
                     return clients.size();
                 }
             });
-            viewModel.loadClientDetailsList();
+//            viewModel.loadClientDetailsList();
+            inProgress(false);
         });
-
         viewModel.loadClientList(company);
+        inProgress(true);
     }
 
     @Override

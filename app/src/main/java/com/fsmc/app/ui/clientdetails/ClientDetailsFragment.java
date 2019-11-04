@@ -54,7 +54,7 @@ public class ClientDetailsFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         ClientDetailsViewModel viewModel = ViewModelProviders.of(this, new FragmentsViewModelFactory()).get(ClientDetailsViewModel.class);
         viewModel.getClientNameLiveData().observe(this, clientName -> textViewName.setText(clientName));
-        viewModel.getClientScoreLiveData().observe(this, clientScore -> textViewScore.setText(String.valueOf(clientScore)));
+        viewModel.getClientScoreLiveData().observe(this, clientScore -> textViewScore.setText(getString( R.string.item_score, clientScore)));
         viewModel.getAddressesLiveData().observe(this, addresses -> recyclerViewAddresses.setAdapter(new RecyclerView.Adapter() {
             @NonNull
             @Override
@@ -90,7 +90,7 @@ public class ClientDetailsFragment extends Fragment {
                 TextView brandName = holder.itemView.findViewById(R.id.brand_item_name);
                 TextView brandQuantity = holder.itemView.findViewById(R.id.brand_item_quantity);
                 brandName.setText(brand.getName());
-                brandQuantity.setText(String.valueOf(brand.getQuality()));
+                brandQuantity.setText(getString(R.string.item_score, brand.getQuality()));
             }
 
             @Override

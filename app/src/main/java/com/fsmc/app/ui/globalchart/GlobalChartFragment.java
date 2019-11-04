@@ -1,5 +1,6 @@
 package com.fsmc.app.ui.globalchart;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -46,31 +47,40 @@ public class GlobalChartFragment extends RecyclerViewFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         GlobalChartViewModel viewModel = ViewModelProviders.of(this, new FragmentsViewModelFactory()).get(GlobalChartViewModel.class);
-        viewModel.getMutableListData().observe(this, clients -> recyclerView.setAdapter(new RecyclerView.Adapter() {
-            @NonNull
+        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
-            public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_client_item, parent, false);
-                return new RecyclerView.ViewHolder(view){};
+            public void handleOnBackPressed() {
+                requireActivity().finish();
             }
+        });
+        viewModel.getMutableListData().observe(this, clients -> {
+            recyclerView.setAdapter(new RecyclerView.Adapter() {
+                @NonNull
+                @Override
+                public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                    View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_client_item, parent, false);
+                    return new RecyclerView.ViewHolder(view){};
+                }
 
-            @Override
-            public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-                Client client = clients.get(position);
-                ((TextView) holder.itemView.findViewById(R.id.client_item_rate)).setText(String.valueOf(client.getRate()));
-                ((TextView) holder.itemView.findViewById(R.id.client_item_name)).setText(client.getName());
-                ((TextView) holder.itemView.findViewById(R.id.client_item_score)).setText(String.valueOf(client.getTotalScore()));
-                ((TextView) holder.itemView.findViewById(R.id.client_item_address)).setText(client.getAddress());
-                holder.itemView.setOnClickListener(view -> navigator.navigateToFragment(ClientDetailsFragment.newInstance(client, navigator)));
-            }
+                @Override
+                public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+                    Client client = clients.get(position);
+                    ((TextView) holder.itemView.findViewById(R.id.client_item_rate)).setText(String.valueOf(client.getRate()));
+                    ((TextView) holder.itemView.findViewById(R.id.client_item_name)).setText(client.getName());
+                    ((TextView) holder.itemView.findViewById(R.id.client_item_score)).setText(getString(R.string.item_score, client.getTotalScore()));
+                    ((TextView) holder.itemView.findViewById(R.id.client_item_address)).setText(client.getAddress());
+                    holder.itemView.setOnClickListener(view -> navigator.navigateToFragment(ClientDetailsFragment.newInstance(client, navigator)));
+                }
 
-            @Override
-            public int getItemCount() {
-                return clients.size();
-            }
-        }));
-
+                @Override
+                public int getItemCount() {
+                    return clients.size();
+                }
+            });
+            inProgress(false);
+        });
         viewModel.loadClientList();
+        inProgress(true);
     }
 
     @Override

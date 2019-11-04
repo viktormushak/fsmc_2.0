@@ -54,29 +54,33 @@ public class CompanyListFragment extends RecyclerViewFragment {
             }
         });
         viewModel = ViewModelProviders.of(this, new FragmentsViewModelFactory()).get(CompanyListViewModel.class);
-        viewModel.getMutableListData().observe(this, companies -> recyclerView.setAdapter(new RecyclerView.Adapter() {
-            @NonNull
-            @Override
-            public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_company_item, parent, false);
-                return new RecyclerView.ViewHolder(view){};
-            }
+        viewModel.getMutableListData().observe(this, companies -> {
+            recyclerView.setAdapter(new RecyclerView.Adapter() {
+                @NonNull
+                @Override
+                public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                    View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_company_item, parent, false);
+                    return new RecyclerView.ViewHolder(view){};
+                }
 
-            @Override
-            public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-                Company company = companies.get(position);
-                ((TextView) holder.itemView.findViewById(R.id.company_item_name)).setText(company.getName());
-                ((TextView) holder.itemView.findViewById(R.id.company_item_date))
-                        .setText(new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(new Date(company.getLastUpdate())));
-                holder.itemView.setOnClickListener(view -> navigator.navigateToFragment(ClientListFragment.newInstance(company.getName(), navigator)));
-            }
+                @Override
+                public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+                    Company company = companies.get(position);
+                    ((TextView) holder.itemView.findViewById(R.id.company_item_name)).setText(company.getName());
+                    ((TextView) holder.itemView.findViewById(R.id.company_item_date))
+                            .setText(new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(new Date(company.getLastUpdate())));
+                    holder.itemView.setOnClickListener(view -> navigator.navigateToFragment(ClientListFragment.newInstance(company.getName(), navigator)));
+                }
 
-            @Override
-            public int getItemCount() {
-                return companies.size();
-            }
-        }));
+                @Override
+                public int getItemCount() {
+                    return companies.size();
+                }
+            });
+            inProgress(false);
+        });
         viewModel.loadCompanyList();
+        inProgress(true);
     }
 
     @Override
