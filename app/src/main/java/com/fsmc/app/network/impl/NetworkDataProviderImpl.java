@@ -20,6 +20,9 @@ import com.fsmc.app.network.base.GsonObjectCachedRequest;
 import com.fsmc.app.network.base.PostClientDataRequest;
 import com.fsmc.app.network.base.ResponseResultObserver;
 
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
 
 public class NetworkDataProviderImpl implements NetworkDataProvider {
@@ -90,8 +93,15 @@ public class NetworkDataProviderImpl implements NetworkDataProvider {
     }
 
     @Override
-    public void postClientData(ClientData clientData, Response.Listener<Boolean> listener) {
+    public void postClientData(ClientData clientData, Response.Listener<JSONObject> listener) {
         String url = BASE_URL + "/api/clients/data";
-        new PostClientDataRequest(url, listener);
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("hashId", String.valueOf(clientData.getHashId()));
+        hashMap.put("name", clientData.getName());
+        hashMap.put("surname", clientData.getSurname());
+        hashMap.put("patronymic", clientData.getPatronymic());
+        hashMap.put("phone", clientData.getPhone());
+        hashMap.put("email", clientData.getEmail());
+        getRequestQueue().add(new PostClientDataRequest(url, hashMap, listener));
     }
 }

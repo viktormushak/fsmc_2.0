@@ -7,6 +7,8 @@ import com.fsmc.app.data.model.ClientDetails;
 import com.fsmc.app.data.model.Company;
 import com.fsmc.app.network.base.ResponseResultObserver;
 
+import org.json.JSONObject;
+
 import java.util.List;
 
 public interface NetworkDataProvider {
@@ -15,6 +17,6 @@ public interface NetworkDataProvider {
     void loadClientList(String company, ResponseResultObserver<List<Client>> observer);
     void loadClientDetails(int clientId, ResponseResultObserver<ClientDetails> observer);
     void loadClientData(Integer integer, Response.Listener<ClientData> listener);
-    void postClientData(ClientData clientData, Response.Listener<Boolean> listener);
+    void postClientData(ClientData clientData, Response.Listener<JSONObject> listener);
     void clearCache();
 }

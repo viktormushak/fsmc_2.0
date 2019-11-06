@@ -14,6 +14,8 @@ import com.fsmc.app.FsmcApplication;
 import com.fsmc.app.R;
 import com.fsmc.app.data.model.ClientData;
 
+import org.json.JSONException;
+
 public class EditPersonActivity extends AppCompatActivity {
 
     MutableLiveData<ClientData> clientDataLiveData = new MutableLiveData<>();
@@ -23,7 +25,6 @@ public class EditPersonActivity extends AppCompatActivity {
     private EditText formPhone;
     private EditText formEmail;
     private CheckBox hasEmail;
-    private Button saveButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,7 @@ public class EditPersonActivity extends AppCompatActivity {
         formPhone = findViewById(R.id.form_phone);
         formEmail = findViewById(R.id.form_email);
         hasEmail = findViewById(R.id.has_email);
-        saveButton = findViewById(R.id.save_data_button);
+        Button saveButton = findViewById(R.id.save_data_button);
 
         clientDataLiveData.observe(this, clientData -> {
             if (!TextUtils.isEmpty(clientData.getSurname())) {
@@ -52,7 +53,13 @@ public class EditPersonActivity extends AppCompatActivity {
                 formPhone.setText(clientData.getPhone());
             }
             if (!TextUtils.isEmpty(clientData.getEmail())) {
-                formEmail.setText(clientData.getEmail());
+                if ("none".equals(clientData.getEmail())){
+                    formEmail.setText("");
+                    hasEmail.setChecked(true);
+                }else {
+                    formEmail.setText(clientData.getEmail());
+                    hasEmail.setChecked(false);
+                }
             }
         });
 
@@ -63,12 +70,22 @@ public class EditPersonActivity extends AppCompatActivity {
 
         saveButton.setOnClickListener(view -> {
             ClientData clientData = new ClientData();
+            clientData.setHashId(id);
+            clientData.setName(formName.getText().toString());
+            clientData.setSurname(formSurname.getText().toString());
+            clientData.setPatronymic(formPatronymic.getText().toString());
+            clientData.setPhone(formPhone.getText().toString());
+            clientData.setEmail(hasEmail.isChecked() ? "none" : formEmail.getText().toString());
             FsmcApplication.getNetworkDataProvider()
                     .postClientData(clientData, response -> {
-                        if (response){
-                            Toast.makeText(getApplicationContext(), "Данные сохранены", Toast.LENGTH_LONG).show();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Ошибка сохранения данных", Toast.LENGTH_LONG).show();
+                        try {
+                            if (response.getBoolean("")){
+                                Toast.makeText(getApplicationContext(), "Данные сохранены", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Ошибка сохранения данных", Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
                     });
         });
