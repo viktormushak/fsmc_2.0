@@ -7,7 +7,6 @@ public class ClientData {
     private String patronymic;
     private String phone;
     private String email;
-    private boolean hasEmail;
 
     public void setHashId(int hashId) {
         this.hashId = hashId;
@@ -33,10 +32,6 @@ public class ClientData {
         this.email = email;
     }
 
-    public void setHasEmail(boolean hasEmail) {
-        this.hasEmail = hasEmail;
-    }
-
     public int getHashId() {
         return hashId;
     }
@@ -59,9 +54,5 @@ public class ClientData {
 
     public String getEmail() {
         return email;
-    }
-
-    public boolean isHasEmail() {
-        return hasEmail;
     }
 }

@@ -106,6 +106,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:button="@drawable/check_box_background"
                     android:text="@string/no_email_checkbox"
                     android:textColor="@color/colorWhite"
                     android:textSize="24sp"

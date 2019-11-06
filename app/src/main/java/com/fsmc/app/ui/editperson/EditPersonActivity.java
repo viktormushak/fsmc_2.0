@@ -79,7 +79,7 @@ public class EditPersonActivity extends AppCompatActivity {
             FsmcApplication.getNetworkDataProvider()
                     .postClientData(clientData, response -> {
                         try {
-                            if (response.getBoolean("")){
+                            if (response.getBoolean("success")){
                                 Toast.makeText(getApplicationContext(), "Данные сохранены", Toast.LENGTH_LONG).show();
                             } else {
                                 Toast.makeText(getApplicationContext(), "Ошибка сохранения данных", Toast.LENGTH_LONG).show();
@@ -87,6 +87,8 @@ public class EditPersonActivity extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        FsmcApplication.getNetworkDataProvider().clearCache();
+                        finish();
                     });
         });
     }
