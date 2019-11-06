@@ -6,4 +6,7 @@
     <string name="label_email">Email:</string>
     <string name="save_data_button">Сохранить</string>
     <string name="no_email_checkbox">email отсутствует</string>
+    <string name="surname">Фамилия</string>
+    <string name="name">Имя</string>
+    <string name="patronymic">Отчество</string>
 </resources>

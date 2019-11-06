@@ -5,15 +5,19 @@ import android.content.Context;
 import com.android.volley.Cache;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
 import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.fsmc.app.data.model.Client;
+import com.fsmc.app.data.model.ClientData;
 import com.fsmc.app.data.model.ClientDetails;
 import com.fsmc.app.data.model.Company;
 import com.fsmc.app.network.NetworkDataProvider;
+import com.fsmc.app.network.base.GetClientDataRequest;
 import com.fsmc.app.network.base.GsonListCachedRequest;
 import com.fsmc.app.network.base.GsonObjectCachedRequest;
+import com.fsmc.app.network.base.PostClientDataRequest;
 import com.fsmc.app.network.base.ResponseResultObserver;
 
 import java.util.List;
@@ -77,5 +81,17 @@ public class NetworkDataProviderImpl implements NetworkDataProvider {
     @Override
     public void clearCache() {
         cache.clear();
+    }
+
+    @Override
+    public void loadClientData(Integer integer, Response.Listener<ClientData> listener) {
+        String url = BASE_URL + "/api/clients/data?id=" + integer;
+        getRequestQueue().add(new GetClientDataRequest(url, listener));
+    }
+
+    @Override
+    public void postClientData(ClientData clientData, Response.Listener<Boolean> listener) {
+        String url = BASE_URL + "/api/clients/data";
+        new PostClientDataRequest(url, listener);
     }
 }
