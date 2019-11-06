@@ -68,7 +68,9 @@ public class ClientDetailsFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_edit){
-            startActivity(new Intent(requireActivity(), EditPersonActivity.class));
+            Intent intent = new Intent(requireActivity(), EditPersonActivity.class);
+            intent.putExtra("clientId", client.getHashId());
+            startActivity(intent);
         }
         return true;
     }

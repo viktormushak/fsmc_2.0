@@ -1,6 +1,5 @@
 package com.fsmc.app.ui.editperson;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
@@ -26,7 +25,6 @@ public class EditPersonActivity extends AppCompatActivity {
     private CheckBox hasEmail;
     private Button saveButton;
 
-    @SuppressLint("StaticFieldLeak")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,8 +56,10 @@ public class EditPersonActivity extends AppCompatActivity {
             }
         });
 
+        int id = getIntent().getIntExtra("clientId", 0);
+
         FsmcApplication.getNetworkDataProvider()
-                .loadClientData(-883900940, response -> clientDataLiveData.setValue(response));
+                .loadClientData(id, response -> clientDataLiveData.setValue(response));
 
         saveButton.setOnClickListener(view -> {
             ClientData clientData = new ClientData();
