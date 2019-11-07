@@ -66,8 +66,8 @@ public class NetworkDataProviderImpl implements NetworkDataProvider {
     }
 
     @Override
-    public void postClientData(ClientData clientData, Response.Listener<ClientData> listener) {
-        getRequestQueue().add(new PostClientDataRequest(clientData, new HashMap<>(), listener));
+    public void postClientData(ClientData clientData, Response.Listener<ClientData> listener, Response.ErrorListener errorListener) {
+        getRequestQueue().add(new PostClientDataRequest(clientData, new HashMap<>(), listener, errorListener));
     }
 
     @Override

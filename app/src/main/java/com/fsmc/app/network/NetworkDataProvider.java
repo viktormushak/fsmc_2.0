@@ -13,6 +13,6 @@ public interface NetworkDataProvider {
     void loadClientList(Response.Listener<List<Client>> listener);
     void loadClientListByCompanyName(String companyName, Response.Listener<List<Client>> listener);
     void loadClientDetailsByClientId(int clientId, Response.Listener<ClientDetails> listener);
-    void postClientData(ClientData clientData, Response.Listener<ClientData> listener);
+    void postClientData(ClientData clientData, Response.Listener<ClientData> listener, Response.ErrorListener errorListener);
     void loadClientDataByClientId(int integer, Response.Listener<ClientData> listener);
 }

@@ -16,8 +16,8 @@ public class PostClientDataRequest extends AbsFsmcRequest<ClientData> {
     private final static String URL = "/api/clients/data";
     private ClientData clientData;
 
-    public PostClientDataRequest(ClientData clientData, HashMap<String, String> params, Response.Listener<ClientData> listener) {
-        super(Method.POST, URL, params, listener, Throwable::printStackTrace);
+    public PostClientDataRequest(ClientData clientData, HashMap<String, String> params, Response.Listener<ClientData> listener, Response.ErrorListener errorListener) {
+        super(Method.POST, URL, params, listener, errorListener);
         this.clientData = clientData;
     }
 

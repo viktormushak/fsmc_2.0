@@ -82,12 +82,12 @@ public class CompanyListFragment extends RecyclerViewFragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.global_chart_off_menu, menu);
+        inflater.inflate(R.menu.global_chart_menu, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.global_chart_on){
+        if (item.getItemId() == R.id.global_chart){
             navigator.navigateToFragment(ClientListFragment.newInstance(null, navigator));
         }
         return true;

@@ -85,7 +85,7 @@ public class EditPersonalDataFragment extends Fragment {
             clientData.setPatronymic(formPatronymic.getText().toString());
             clientData.setPhone(formPhone.getText().toString());
             clientData.setEmail(hasEmail.isChecked() ? "none" : formEmail.getText().toString());
-            mViewModel.postClientData(clientData);
+            mViewModel.postClientData(requireActivity(), clientData);
         });
     }
 

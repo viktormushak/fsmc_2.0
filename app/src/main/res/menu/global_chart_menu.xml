@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/global_chart_on"
-        android:icon="@drawable/ic_global_chart_off"
+        android:id="@+id/global_chart"
+        android:icon="@drawable/ic_global_chart"
         android:title="Update"
         app:showAsAction="always" />
 </menu>
