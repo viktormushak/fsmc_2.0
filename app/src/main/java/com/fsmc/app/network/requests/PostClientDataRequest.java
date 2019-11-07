@@ -23,7 +23,7 @@ public class PostClientDataRequest extends AbsFsmcRequest<ClientData> {
 
     @Override
     public String getBodyContentType() {
-        return super.getBodyContentType();
+        return "application/json";
     }
 
     @Override

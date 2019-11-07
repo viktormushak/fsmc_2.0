@@ -94,11 +94,15 @@ public class ClientDetailsFragment extends Fragment {
 
                 @Override
                 public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-                    ((TextView) holder.itemView.findViewById(R.id.address_item))
-                            .setText(getString(R.string.full_address,
-                                    clientDetails.getAddresses().get(position).getRegion(),
-                                    clientDetails.getAddresses().get(position).getCity(),
-                                    clientDetails.getAddresses().get(position).getAddress()));
+                    StringBuilder stringBuilder = new StringBuilder();
+                    if (!clientDetails.getAddresses().get(position).getRegion().isEmpty()){
+                        stringBuilder.append(clientDetails.getAddresses().get(position).getRegion()).append(", ");
+                    }
+                    if (!clientDetails.getAddresses().get(position).getCity().isEmpty()){
+                        stringBuilder.append(clientDetails.getAddresses().get(position).getCity()).append(", ");
+                    }
+                    stringBuilder.append(clientDetails.getAddresses().get(position).getAddress());
+                    ((TextView) holder.itemView.findViewById(R.id.address_item)).setText(stringBuilder.toString());
                 }
 
                 @Override

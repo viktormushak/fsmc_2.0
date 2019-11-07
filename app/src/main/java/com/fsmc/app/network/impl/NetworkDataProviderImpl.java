@@ -48,7 +48,7 @@ public class NetworkDataProviderImpl implements NetworkDataProvider {
 
     @Override
     public void loadClientList(Response.Listener<List<Client>> listener) {
-        getRequestQueue().add(new GetClientsCachedRequest(new HashMap<>(), listener));
+        loadClientListByCompanyName(null, listener);
     }
 
     @Override
