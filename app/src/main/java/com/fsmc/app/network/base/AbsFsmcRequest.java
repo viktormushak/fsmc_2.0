@@ -33,10 +33,9 @@ public abstract class AbsFsmcRequest<R> extends Request<R> {
                         .append(entry.getValue())
                         .append("&");
             }
+            parametrizedUrlBuilder.deleteCharAt(parametrizedUrlBuilder.lastIndexOf("&"));
         }
-        return parametrizedUrlBuilder
-                .deleteCharAt(parametrizedUrlBuilder.lastIndexOf("&"))
-                .toString();
+        return parametrizedUrlBuilder.toString();
     }
 
     protected abstract R entry(NetworkResponse response);

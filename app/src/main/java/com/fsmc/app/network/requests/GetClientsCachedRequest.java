@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +27,7 @@ public class GetClientsCachedRequest extends AbsFsmcCachedRequest<List<Client>> 
     protected List<Client> entry(NetworkResponse response) {
         try {
             String json = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-            return new Gson().fromJson(json, (Type) Array.newInstance(Client.class, 0).getClass());
+            return Arrays.asList(new Gson().fromJson(json, (Type) Array.newInstance(Client.class, 0).getClass()));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return Collections.emptyList();

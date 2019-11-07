@@ -5,7 +5,7 @@ import com.fsmc.app.ui.main.base.BaseViewModel;
 
 import java.util.List;
 
-class CompanyListViewModel extends BaseViewModel<List<Company>> {
+public class CompanyListViewModel extends BaseViewModel<List<Company>> {
 
     void loadCompanyList(){
         this.networkDataProvider.loadCompanyList(mutableData::setValue);
