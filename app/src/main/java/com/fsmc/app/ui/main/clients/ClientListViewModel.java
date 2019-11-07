@@ -8,6 +8,7 @@ import com.fsmc.app.ui.main.base.BaseViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("WeakerAccess")
 public class ClientListViewModel extends BaseViewModel<List<Client>> {
 
     private List<Client> unsearchableList = new ArrayList<>();

@@ -6,8 +6,6 @@ import com.fsmc.app.data.model.ClientData;
 import com.fsmc.app.data.model.ClientDetails;
 import com.fsmc.app.data.model.Company;
 
-import org.json.JSONObject;
-
 import java.util.List;
 
 public interface NetworkDataProvider {

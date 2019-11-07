@@ -21,9 +21,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fsmc.app.R;
 import com.fsmc.app.data.model.Brand;
 import com.fsmc.app.data.model.Client;
+import com.fsmc.app.ui.clientdata.EditPersonActivity;
 import com.fsmc.app.ui.main.MainActivityNavigator;
 import com.fsmc.app.ui.main.clients.ClientListFragment;
-import com.fsmc.app.ui.clientdata.EditPersonActivity;
 
 public class ClientDetailsFragment extends Fragment {
 

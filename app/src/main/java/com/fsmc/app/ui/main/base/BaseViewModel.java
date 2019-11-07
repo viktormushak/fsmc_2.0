@@ -7,8 +7,6 @@ import androidx.lifecycle.ViewModel;
 import com.fsmc.app.FsmcApplication;
 import com.fsmc.app.network.NetworkDataProvider;
 
-import java.util.List;
-
 public class BaseViewModel<T> extends ViewModel {
 
     protected final NetworkDataProvider networkDataProvider;

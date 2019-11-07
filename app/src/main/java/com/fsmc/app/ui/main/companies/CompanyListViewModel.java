@@ -5,6 +5,7 @@ import com.fsmc.app.ui.main.base.BaseViewModel;
 
 import java.util.List;
 
+@SuppressWarnings("WeakerAccess")
 public class CompanyListViewModel extends BaseViewModel<List<Company>> {
 
     void loadCompanyList(){
