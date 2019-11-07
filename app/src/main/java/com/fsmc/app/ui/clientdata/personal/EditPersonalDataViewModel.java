@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel;
 import com.fsmc.app.FsmcApplication;
 import com.fsmc.app.data.model.ClientData;
 
-class EditPersonalDataViewModel extends ViewModel {
+public class EditPersonalDataViewModel extends ViewModel {
 
     private MutableLiveData<ClientData> clientDataLiveData = new MutableLiveData<>();
 

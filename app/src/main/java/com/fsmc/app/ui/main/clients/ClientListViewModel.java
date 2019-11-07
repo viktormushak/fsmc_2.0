@@ -15,14 +15,22 @@ public class ClientListViewModel extends BaseViewModel<List<Client>> {
     void loadClientList(String company){
         if (company == null){
             getNetworkDataProvider().loadClientList(response -> {
+                setRates(response);
                 unsearchableList.addAll(response);
                 mutableData.setValue(response);
             });
         } else {
             getNetworkDataProvider().loadClientListByCompanyName(company, response -> {
+                setRates(response);
                 unsearchableList.addAll(response);
                 mutableData.setValue(response);
             });
+        }
+    }
+
+    private void setRates(List<Client> clientList) {
+        for (int i = 0; i < clientList.size(); i++) {
+            clientList.get(i).setRate(i+1);
         }
     }
 
