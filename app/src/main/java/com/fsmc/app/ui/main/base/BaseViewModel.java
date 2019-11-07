@@ -1,9 +1,10 @@
-package com.fsmc.app.ui.base;
+package com.fsmc.app.ui.main.base;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.fsmc.app.FsmcApplication;
 import com.fsmc.app.network.NetworkDataProvider;
 
 import java.util.List;
@@ -11,18 +12,18 @@ import java.util.List;
 public class BaseViewModel<T> extends ViewModel {
 
     protected final NetworkDataProvider networkDataProvider;
-    protected final MutableLiveData<List<T>> mutableListData;
+    protected final MutableLiveData<T> mutableData;
 
-    public BaseViewModel(NetworkDataProvider networkDataProvider) {
-        this.networkDataProvider = networkDataProvider;
-        this.mutableListData = new MutableLiveData<>();
+    public BaseViewModel() {
+        this.networkDataProvider = FsmcApplication.getNetworkDataProvider();
+        this.mutableData = new MutableLiveData<>();
     }
 
     protected NetworkDataProvider getNetworkDataProvider() {
         return networkDataProvider;
     }
 
-    public LiveData<List<T>> getMutableListData() {
-        return mutableListData;
+    public LiveData<T> getMutableData() {
+        return mutableData;
     }
 }

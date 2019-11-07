@@ -1,4 +1,4 @@
-package com.fsmc.app.ui.base;
+package com.fsmc.app.ui.main.base;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

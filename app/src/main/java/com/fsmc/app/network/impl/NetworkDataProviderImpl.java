@@ -2,8 +2,6 @@ package com.fsmc.app.network.impl;
 
 import android.content.Context;
 
-import com.android.volley.Cache;
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.BasicNetwork;
@@ -14,23 +12,19 @@ import com.fsmc.app.data.model.ClientData;
 import com.fsmc.app.data.model.ClientDetails;
 import com.fsmc.app.data.model.Company;
 import com.fsmc.app.network.NetworkDataProvider;
-import com.fsmc.app.network.base.GetClientDataRequest;
-import com.fsmc.app.network.base.GsonListCachedRequest;
-import com.fsmc.app.network.base.GsonObjectCachedRequest;
-import com.fsmc.app.network.base.PostClientDataRequest;
-import com.fsmc.app.network.base.ResponseResultObserver;
-
-import org.json.JSONObject;
+import com.fsmc.app.network.requests.GetClientDataRequest;
+import com.fsmc.app.network.requests.GetClientDetailsCachedRequest;
+import com.fsmc.app.network.requests.GetClientsCachedRequest;
+import com.fsmc.app.network.requests.GetCompaniesCachedRequest;
+import com.fsmc.app.network.requests.PostClientDataRequest;
 
 import java.util.HashMap;
 import java.util.List;
 
 public class NetworkDataProviderImpl implements NetworkDataProvider {
 
-    private static final String BASE_URL = "http://91.226.253.178:6128";
     private static final int CACHE_SIZE = 1024 * 1024;
     private Context context;
-    private Cache cache;
     private RequestQueue requestQueue;
 
     public NetworkDataProviderImpl(Context applicationContext) {
@@ -38,70 +32,48 @@ public class NetworkDataProviderImpl implements NetworkDataProvider {
     }
 
     private RequestQueue getRequestQueue(){
-        cache = new DiskBasedCache(context.getCacheDir(), CACHE_SIZE);
         if (requestQueue == null){
-            requestQueue = new RequestQueue(cache, new BasicNetwork(new HurlStack())
-            );
+            requestQueue = new RequestQueue(
+                    new DiskBasedCache(context.getCacheDir(), CACHE_SIZE),
+                    new BasicNetwork(new HurlStack()));
             requestQueue.start();
         }
         return requestQueue;
     }
 
-    private <T> Request<List<T>> gsonListGetRequest(String url, Class<T> clazz, ResponseResultObserver<List<T>> resultObserver){
-        return new GsonListCachedRequest<>(Request.Method.GET, url, clazz, resultObserver);
-    }
-
-    @SuppressWarnings("SameParameterValue")
-    private <T> Request<T> gsonObjectGetRequest(String url, Class<T> clazz, ResponseResultObserver<T> resultObserver){
-        return new GsonObjectCachedRequest<>(Request.Method.GET, url, clazz, resultObserver);
+    @Override
+    public void loadCompanyList(Response.Listener<List<Company>> listener) {
+        getRequestQueue().add(new GetCompaniesCachedRequest(new HashMap<>(), listener));
     }
 
     @Override
-    public void loadCompanyList(ResponseResultObserver<List<Company>> resultObserver) {
-        String url = BASE_URL + "/api/companies";
-        getRequestQueue().add(gsonListGetRequest(url, Company.class, resultObserver));
+    public void loadClientList(Response.Listener<List<Client>> listener) {
+        getRequestQueue().add(new GetClientsCachedRequest(new HashMap<>(), listener));
     }
 
     @Override
-    public void loadClientList(ResponseResultObserver<List<Client>> observer) {
-        String url = BASE_URL + "/api/clients/global";
-        getRequestQueue().add(gsonListGetRequest(url, Client.class, observer));
+    public void loadClientListByCompanyName(String companyName, Response.Listener<List<Client>> listener) {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("company", companyName);
+        getRequestQueue().add(new GetClientsCachedRequest(params, listener));
     }
 
     @Override
-    public void loadClientList(String company, ResponseResultObserver<List<Client>> resultObserver) {
-        String url = BASE_URL + "/api/clients?company=" + company;
-        getRequestQueue().add(gsonListGetRequest(url, Client.class, resultObserver));
-
+    public void loadClientDetailsByClientId(int clientId, Response.Listener<ClientDetails> listener) {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("id", String.valueOf(clientId));
+        getRequestQueue().add(new GetClientDetailsCachedRequest(params, listener));
     }
 
     @Override
-    public void loadClientDetails(int clientId, ResponseResultObserver<ClientDetails> resultObserver) {
-        String url = BASE_URL + "/api/clients/details?id=" + clientId;
-        getRequestQueue().add(gsonObjectGetRequest(url, ClientDetails.class, resultObserver));
+    public void postClientData(ClientData clientData, Response.Listener<ClientData> listener) {
+        getRequestQueue().add(new PostClientDataRequest(clientData, new HashMap<>(), listener));
     }
 
     @Override
-    public void clearCache() {
-        cache.clear();
-    }
-
-    @Override
-    public void loadClientData(Integer integer, Response.Listener<ClientData> listener) {
-        String url = BASE_URL + "/api/clients/data?id=" + integer;
-        getRequestQueue().add(new GetClientDataRequest(url, listener));
-    }
-
-    @Override
-    public void postClientData(ClientData clientData, Response.Listener<JSONObject> listener) {
-        String url = BASE_URL + "/api/clients/data";
-        HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("hashId", String.valueOf(clientData.getHashId()));
-        hashMap.put("name", clientData.getName());
-        hashMap.put("surname", clientData.getSurname());
-        hashMap.put("patronymic", clientData.getPatronymic());
-        hashMap.put("phone", clientData.getPhone());
-        hashMap.put("email", clientData.getEmail());
-        getRequestQueue().add(new PostClientDataRequest(url, hashMap, listener));
+    public void loadClientDataByClientId(int clientId, Response.Listener<ClientData> listener) {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("id", String.valueOf(clientId));
+        getRequestQueue().add(new GetClientDataRequest(params, listener));
     }
 }

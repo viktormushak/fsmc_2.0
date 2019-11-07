@@ -1,6 +1,7 @@
 package com.fsmc.app.data.model;
 
 public class ClientData {
+    public static final ClientData EMPTY = new ClientData();
     private int hashId;
     private String name;
     private String surname;

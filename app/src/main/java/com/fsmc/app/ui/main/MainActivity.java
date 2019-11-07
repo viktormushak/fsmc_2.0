@@ -1,28 +1,21 @@
-package com.fsmc.app.ui;
+package com.fsmc.app.ui.main;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.view.View;
-import android.widget.ProgressBar;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.fsmc.app.R;
-import com.fsmc.app.ui.companies.CompanyListFragment;
+import com.fsmc.app.ui.base.BaseActivity;
+import com.fsmc.app.ui.main.companies.CompanyListFragment;
 
-public class MainActivity extends AppCompatActivity implements MainActivityNavigator {
+public class MainActivity extends BaseActivity implements MainActivityNavigator {
 
     private Fragment currentFragment;
 
-    @SuppressLint("HandlerLeak")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.fragment_activity_layout);
     }
 
     @Override

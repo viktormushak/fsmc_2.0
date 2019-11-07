@@ -1,15 +1,18 @@
 package com.fsmc.app.data.model;
 
+import java.util.Collections;
 import java.util.List;
 
 public class ClientDetails {
 
+    public static final ClientDetails EMPTY =
+            new ClientDetails("", Collections.emptyList(), Collections.emptyList());
     private String name;
     private double totalScore;
     private List<Address> addresses;
     private List<ClientDetails.Brand> brands;
 
-    public ClientDetails(String name, List<Address> addresses, List<Brand> brands) {
+    private ClientDetails(String name, List<Address> addresses, List<Brand> brands) {
         this.name = name;
         this.addresses = addresses;
         this.brands = brands;

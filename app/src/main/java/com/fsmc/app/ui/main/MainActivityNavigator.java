@@ -1,4 +1,4 @@
-package com.fsmc.app.ui;
+package com.fsmc.app.ui.main;
 
 import androidx.fragment.app.Fragment;
 

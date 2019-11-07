@@ -1,35 +1,23 @@
 package com.fsmc.app.network.base;
 
+import androidx.annotation.Nullable;
+
 import com.android.volley.Cache;
 import com.android.volley.NetworkResponse;
-import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 
-import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 
-public abstract class CachedRequest<R> extends Request<R>  {
+public abstract class AbsFsmcCachedRequest<R> extends AbsFsmcRequest<R> {
 
-    private final Response.Listener<? super R> listener;
+    protected AbsFsmcCachedRequest(int method, String url, HashMap<String, String> params, Response.Listener<R> listener, @Nullable Response.ErrorListener errorListener) {
+        super(method, url, params, listener, errorListener);
 
-    CachedRequest(int method, String url, Response.Listener<? super R> listener) {
-        super(method, url, Throwable::printStackTrace);
-        this.listener = listener;
     }
 
     @Override
-    protected Response<R> parseNetworkResponse(NetworkResponse response) {
-        try {
-            return parseResponse(response, cacheResponse(response));
-        } catch (UnsupportedEncodingException e) {
-            return Response.error(new VolleyError("Can not parse response!"));
-        }
-    }
-
-    abstract Response<R> parseResponse(NetworkResponse response, Cache.Entry cacheEntry) throws UnsupportedEncodingException;
-
-    private Cache.Entry cacheResponse(NetworkResponse response) {
+    protected Cache.Entry cacheEntry(NetworkResponse response) {
         Cache.Entry cacheEntry = HttpHeaderParser.parseCacheHeaders(response);
         if (cacheEntry == null) {
             cacheEntry = new Cache.Entry();
@@ -48,10 +36,5 @@ public abstract class CachedRequest<R> extends Request<R>  {
         }
         cacheEntry.responseHeaders = response.headers;
         return cacheEntry;
-    }
-
-    @Override
-    protected void deliverResponse(R response) {
-        listener.onResponse(response);
     }
 }

@@ -1,4 +1,4 @@
-package com.fsmc.app.ui.clientdetails;
+package com.fsmc.app.ui.main.clientdetails;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,10 +21,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fsmc.app.R;
 import com.fsmc.app.data.model.Client;
 import com.fsmc.app.data.model.ClientDetails;
-import com.fsmc.app.ui.MainActivityNavigator;
-import com.fsmc.app.ui.base.FragmentsViewModelFactory;
-import com.fsmc.app.ui.clientlist.ClientListFragment;
-import com.fsmc.app.ui.editperson.EditPersonActivity;
+import com.fsmc.app.ui.main.MainActivityNavigator;
+import com.fsmc.app.ui.main.clients.ClientListFragment;
+import com.fsmc.app.ui.clientdata.EditPersonActivity;
 
 public class ClientDetailsFragment extends Fragment {
 
@@ -78,53 +77,59 @@ public class ClientDetailsFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ClientDetailsViewModel viewModel = ViewModelProviders.of(this, new FragmentsViewModelFactory()).get(ClientDetailsViewModel.class);
-        viewModel.getClientNameLiveData().observe(this, clientName -> textViewName.setText(clientName));
-        viewModel.getClientScoreLiveData().observe(this, clientScore -> textViewScore.setText(getString( R.string.item_score, clientScore)));
-        viewModel.getAddressesLiveData().observe(this, addresses -> recyclerViewAddresses.setAdapter(new RecyclerView.Adapter() {
-            @NonNull
-            @Override
-            public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_address_item, parent, false);
-                return new RecyclerView.ViewHolder(view){};
-            }
 
-            @Override
-            public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-                ClientDetails.Address address = addresses.get(position);
-                TextView textView = holder.itemView.findViewById(R.id.address_item);
-                textView.setText(address.isFullAddressCorrect() ?
-                        getString(R.string.address, address.getRegion(), address.getCity(), address.getStreet()) : address.getAddress());
-            }
+        ClientDetailsViewModel viewModel = ViewModelProviders.of(this).get(ClientDetailsViewModel.class);
 
-            @Override
-            public int getItemCount() {
-                return addresses.size();
-            }
-        }));
-        viewModel.getMutableListData().observe(this, brands -> recyclerViewBrands.setAdapter(new RecyclerView.Adapter() {
-            @NonNull
-            @Override
-            public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_brand_item, parent, false);
-                return new RecyclerView.ViewHolder(view){};
-            }
+        viewModel.getMutableData().observe(this, clientDetails -> {
+            textViewName.setText(clientDetails.getName());
+            textViewScore.setText(getString( R.string.item_score, clientDetails.getTotalScore()));
+            recyclerViewAddresses.setAdapter(new RecyclerView.Adapter() {
+                @NonNull
+                @Override
+                public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                    View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_address_item, parent, false);
+                    return new RecyclerView.ViewHolder(view){};
+                }
 
-            @Override
-            public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-                ClientDetails.Brand brand = brands.get(position);
-                TextView brandName = holder.itemView.findViewById(R.id.brand_item_name);
-                TextView brandQuantity = holder.itemView.findViewById(R.id.brand_item_quantity);
-                brandName.setText(brand.getName());
-                brandQuantity.setText(getString(R.string.item_score, brand.getQuality()));
-            }
+                @Override
+                public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+                    ClientDetails.Address address = clientDetails.getAddresses().get(position);
+                    TextView textView = holder.itemView.findViewById(R.id.address_item);
+                    textView.setText(address.isFullAddressCorrect() ?
+                            getString(R.string.address, address.getRegion(), address.getCity(), address.getStreet()) : address.getAddress());
+                }
 
-            @Override
-            public int getItemCount() {
-                return brands.size();
-            }
-        }));
+                @Override
+                public int getItemCount() {
+                    return clientDetails.getAddresses().size();
+                }
+            });
+            recyclerViewBrands.setAdapter(new RecyclerView.Adapter() {
+                @NonNull
+                @Override
+                public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                    View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_brand_item, parent, false);
+                    return new RecyclerView.ViewHolder(view){};
+                }
+
+                @Override
+                public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+                    ClientDetails.Brand brand = clientDetails.getBrands().get(position);
+                    TextView brandName = holder.itemView.findViewById(R.id.brand_item_name);
+                    TextView brandQuantity = holder.itemView.findViewById(R.id.brand_item_quantity);
+                    brandName.setText(brand.getName());
+                    brandQuantity.setText(getString(R.string.item_score, brand.getQuality()));
+                }
+
+                @Override
+                public int getItemCount() {
+                    return clientDetails.getBrands().size();
+                }
+            });
+        });
+
         viewModel.loadClientDetails(client);
+
         requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {

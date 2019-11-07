@@ -1,4 +1,4 @@
-package com.fsmc.app.ui.companies;
+package com.fsmc.app.ui.main.companies;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,11 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsmc.app.R;
 import com.fsmc.app.data.model.Company;
-import com.fsmc.app.ui.MainActivityNavigator;
-import com.fsmc.app.ui.base.FragmentsViewModelFactory;
-import com.fsmc.app.ui.base.RecyclerViewFragment;
-import com.fsmc.app.ui.clientlist.ClientListFragment;
-import com.fsmc.app.ui.globalchart.GlobalChartFragment;
+import com.fsmc.app.ui.main.MainActivityNavigator;
+import com.fsmc.app.ui.main.base.RecyclerViewFragment;
+import com.fsmc.app.ui.main.clients.ClientListFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,7 +27,6 @@ import java.util.Locale;
 
 public class CompanyListFragment extends RecyclerViewFragment {
 
-    private CompanyListViewModel viewModel;
     private MainActivityNavigator navigator;
 
     public static CompanyListFragment newInstance(MainActivityNavigator navigator) {
@@ -53,8 +50,8 @@ public class CompanyListFragment extends RecyclerViewFragment {
                 requireActivity().finish();
             }
         });
-        viewModel = ViewModelProviders.of(this, new FragmentsViewModelFactory()).get(CompanyListViewModel.class);
-        viewModel.getMutableListData().observe(this, companies -> {
+        CompanyListViewModel viewModel = ViewModelProviders.of(this).get(CompanyListViewModel.class);
+        viewModel.getMutableData().observe(this, companies -> {
             recyclerView.setAdapter(new RecyclerView.Adapter() {
                 @NonNull
                 @Override
@@ -91,7 +88,7 @@ public class CompanyListFragment extends RecyclerViewFragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.global_chart_on){
-            navigator.navigateToFragment(GlobalChartFragment.newInstance(navigator));
+            navigator.navigateToFragment(ClientListFragment.newInstance(null, navigator));
         }
         return true;
     }

@@ -14,8 +14,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning,UnusedAttribute">
-        <activity android:name=".ui.editperson.EditPersonActivity"></activity>
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.base.BaseActivity"></activity>
+        <activity android:name=".ui.clientdata.EditPersonActivity" />
+        <activity android:name=".ui.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

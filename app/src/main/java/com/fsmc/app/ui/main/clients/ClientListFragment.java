@@ -1,15 +1,6 @@
-package com.fsmc.app.ui.globalchart;
-
-import androidx.activity.OnBackPressedCallback;
-import androidx.lifecycle.ViewModelProviders;
+package com.fsmc.app.ui.main.clients;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,23 +9,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.fsmc.app.R;
 import com.fsmc.app.data.model.Client;
-import com.fsmc.app.ui.MainActivityNavigator;
-import com.fsmc.app.ui.base.FragmentsViewModelFactory;
-import com.fsmc.app.ui.base.RecyclerViewFragment;
-import com.fsmc.app.ui.clientdetails.ClientDetailsFragment;
-import com.fsmc.app.ui.companies.CompanyListFragment;
+import com.fsmc.app.ui.main.MainActivityNavigator;
+import com.fsmc.app.ui.main.base.RecyclerViewFragment;
+import com.fsmc.app.ui.main.clientdetails.ClientDetailsFragment;
+import com.fsmc.app.ui.main.companies.CompanyListFragment;
 
-public class GlobalChartFragment extends RecyclerViewFragment {
+public class ClientListFragment extends RecyclerViewFragment {
 
     private MainActivityNavigator navigator;
+    private ClientListViewModel viewModel;
+    private String company;
 
-    public static GlobalChartFragment newInstance(MainActivityNavigator navigator) {
-        GlobalChartFragment fragment = new GlobalChartFragment();
+    public static ClientListFragment newInstance(String company, MainActivityNavigator navigator) {
+        ClientListFragment fragment = new ClientListFragment();
+        fragment.company = company;
         fragment.navigator = navigator;
         return fragment;
-
     }
 
     @Override
@@ -46,14 +45,14 @@ public class GlobalChartFragment extends RecyclerViewFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        GlobalChartViewModel viewModel = ViewModelProviders.of(this, new FragmentsViewModelFactory()).get(GlobalChartViewModel.class);
         requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                requireActivity().finish();
+                navigator.navigateToFragment(CompanyListFragment.newInstance(navigator));
             }
         });
-        viewModel.getMutableListData().observe(this, clients -> {
+        viewModel = ViewModelProviders.of(this).get(ClientListViewModel.class);
+        viewModel.getMutableData().observe(this, clients -> {
             recyclerView.setAdapter(new RecyclerView.Adapter() {
                 @NonNull
                 @Override
@@ -67,7 +66,7 @@ public class GlobalChartFragment extends RecyclerViewFragment {
                     Client client = clients.get(position);
                     ((TextView) holder.itemView.findViewById(R.id.client_item_rate)).setText(String.valueOf(client.getRate()));
                     ((TextView) holder.itemView.findViewById(R.id.client_item_name)).setText(client.getName());
-                    ((TextView) holder.itemView.findViewById(R.id.client_item_score)).setText(getString(R.string.item_score, client.getTotalScore()));
+                    ((TextView) holder.itemView.findViewById(R.id.client_item_score)).setText(getString( R.string.item_score, client.getTotalScore()));
                     ((TextView) holder.itemView.findViewById(R.id.client_item_address)).setText(client.getAddress());
                     holder.itemView.setOnClickListener(view -> navigator.navigateToFragment(ClientDetailsFragment.newInstance(client, navigator)));
                 }
@@ -79,21 +78,25 @@ public class GlobalChartFragment extends RecyclerViewFragment {
             });
             inProgress(false);
         });
-        viewModel.loadClientList();
+        viewModel.loadClientList(company);
         inProgress(true);
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.global_chart_on_menu, menu);
-    }
+        inflater.inflate(R.menu.clients_menu, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return viewModel.searchClients(query);
+            }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.global_chart_off){
-            navigator.navigateToFragment(CompanyListFragment.newInstance(navigator));
-        }
-        return true;
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return viewModel.searchClients(newText);
+            }
+        });
     }
-
 }
