@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">FSMC 2.0</string>
-    <string name="address">%1$s region, %2$s city, %3$s</string>
     <string name="item_score">%1$.1f</string>
-    <string name="label_phone">Телефон:</string>
-    <string name="label_email">Email:</string>
-    <string name="save_data_button">Сохранить</string>
+    <string name="full_address">%1$s обл., %2$s, %3$s</string>
+    <string name="hint_surname">Фамилия</string>
+    <string name="hint_name">Имя</string>
+    <string name="hint_patronymic">Отчество</string>
+    <string name="hint_phone">Телефон</string>
+    <string name="hint_email">Email</string>
     <string name="no_email_checkbox">email отсутствует</string>
-    <string name="surname">Фамилия</string>
-    <string name="name">Имя</string>
-    <string name="patronymic">Отчество</string>
+    <string name="save_data_button">Сохранить</string>
 </resources>

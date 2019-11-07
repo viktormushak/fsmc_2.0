@@ -19,8 +19,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fsmc.app.R;
+import com.fsmc.app.data.model.Brand;
 import com.fsmc.app.data.model.Client;
-import com.fsmc.app.data.model.ClientDetails;
 import com.fsmc.app.ui.main.MainActivityNavigator;
 import com.fsmc.app.ui.main.clients.ClientListFragment;
 import com.fsmc.app.ui.clientdata.EditPersonActivity;
@@ -87,16 +87,18 @@ public class ClientDetailsFragment extends Fragment {
                 @NonNull
                 @Override
                 public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                    View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_address_item, parent, false);
-                    return new RecyclerView.ViewHolder(view){};
+                    return new RecyclerView.ViewHolder(
+                            LayoutInflater.from(parent.getContext())
+                                    .inflate(R.layout.recycler_view_address_item, parent, false)){};
                 }
 
                 @Override
                 public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-                    ClientDetails.Address address = clientDetails.getAddresses().get(position);
-                    TextView textView = holder.itemView.findViewById(R.id.address_item);
-                    textView.setText(address.isFullAddressCorrect() ?
-                            getString(R.string.address, address.getRegion(), address.getCity(), address.getStreet()) : address.getAddress());
+                    ((TextView) holder.itemView.findViewById(R.id.address_item))
+                            .setText(getString(R.string.full_address,
+                                    clientDetails.getAddresses().get(position).getRegion(),
+                                    clientDetails.getAddresses().get(position).getCity(),
+                                    clientDetails.getAddresses().get(position).getAddress()));
                 }
 
                 @Override
@@ -114,7 +116,7 @@ public class ClientDetailsFragment extends Fragment {
 
                 @Override
                 public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-                    ClientDetails.Brand brand = clientDetails.getBrands().get(position);
+                    Brand brand = clientDetails.getBrands().get(position);
                     TextView brandName = holder.itemView.findViewById(R.id.brand_item_name);
                     TextView brandQuantity = holder.itemView.findViewById(R.id.brand_item_quantity);
                     brandName.setText(brand.getName());

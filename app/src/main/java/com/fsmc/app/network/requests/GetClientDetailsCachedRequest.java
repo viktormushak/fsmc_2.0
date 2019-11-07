@@ -12,7 +12,7 @@ import java.util.HashMap;
 
 public class GetClientDetailsCachedRequest extends AbsFsmcCachedRequest<ClientDetails> {
 
-    private final static String URL = "";
+    private final static String URL = "/api/clients/details";
 
     public GetClientDetailsCachedRequest(HashMap<String, String> params, Response.Listener<ClientDetails> listener) {
         super(Method.GET, URL, params, listener, Throwable::printStackTrace);

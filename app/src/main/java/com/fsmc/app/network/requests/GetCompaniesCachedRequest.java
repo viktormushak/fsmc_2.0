@@ -16,7 +16,7 @@ import java.util.List;
 
 public class GetCompaniesCachedRequest extends AbsFsmcCachedRequest<List<Company>> {
 
-    private final static String URL = "";
+    private final static String URL = "/api/companies";
 
     public GetCompaniesCachedRequest(HashMap<String, String> params, Response.Listener<List<Company>> listener) {
         super(Method.GET, URL, params, listener, Throwable::printStackTrace);

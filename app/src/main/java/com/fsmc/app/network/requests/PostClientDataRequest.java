@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 public class PostClientDataRequest extends AbsFsmcRequest<ClientData> {
 
-    private final static String URL = "";
+    private final static String URL = "/api/clients/data";
     private ClientData clientData;
 
     public PostClientDataRequest(ClientData clientData, HashMap<String, String> params, Response.Listener<ClientData> listener) {

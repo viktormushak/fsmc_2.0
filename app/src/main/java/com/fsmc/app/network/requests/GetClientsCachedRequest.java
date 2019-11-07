@@ -16,7 +16,7 @@ import java.util.List;
 
 public class GetClientsCachedRequest extends AbsFsmcCachedRequest<List<Client>> {
 
-    private final static String URL = "";
+    private final static String URL = "/api/clients";
 
     public GetClientsCachedRequest(HashMap<String, String> params, Response.Listener<List<Client>> listener) {
         super(Method.GET, URL, params, listener, Throwable::printStackTrace);
