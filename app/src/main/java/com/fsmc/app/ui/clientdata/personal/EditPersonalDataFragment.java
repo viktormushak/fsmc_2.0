@@ -26,7 +26,6 @@ public class EditPersonalDataFragment extends Fragment {
     private EditText formPhone;
     private EditText formEmail;
     private CheckBox hasEmail;
-    private Button saveButton;
     private int clientId;
 
     public static EditPersonalDataFragment newInstance(int clientId) {
@@ -45,7 +44,20 @@ public class EditPersonalDataFragment extends Fragment {
         formPhone = view.findViewById(R.id.form_phone);
         formEmail = view.findViewById(R.id.form_email);
         hasEmail = view.findViewById(R.id.has_email);
-        saveButton = view.findViewById(R.id.save_data_button);
+        Button saveButton = view.findViewById(R.id.save_data_button);
+        saveButton.setOnClickListener(v -> {
+            ClientData clientData = new ClientData();
+            clientData.setHashId(clientId);
+            clientData.setName(formName.getText().toString());
+            clientData.setSurname(formSurname.getText().toString());
+            clientData.setPatronymic(formPatronymic.getText().toString());
+            clientData.setPhone(formPhone.getText().toString());
+            clientData.setEmail(hasEmail.isChecked() ? "none" : formEmail.getText().toString());
+            if (mViewModel != null) {
+                mViewModel.postClientData(requireActivity(), clientData);
+            }
+        });
+        hasEmail.setOnCheckedChangeListener((v, checked) -> formEmail.setEnabled(!checked));
         return view;
     }
 
@@ -69,24 +81,16 @@ public class EditPersonalDataFragment extends Fragment {
             if (!TextUtils.isEmpty(clientData.getEmail())) {
                 if ("none".equals(clientData.getEmail())){
                     formEmail.setText("");
+                    formEmail.setEnabled(false);
                     hasEmail.setChecked(true);
                 }else {
                     formEmail.setText(clientData.getEmail());
+                    formEmail.setEnabled(true);
                     hasEmail.setChecked(false);
                 }
             }
         });
         mViewModel.loadClientDataByClientId(clientId);
-        saveButton.setOnClickListener(view -> {
-            ClientData clientData = new ClientData();
-            clientData.setHashId(clientId);
-            clientData.setName(formName.getText().toString());
-            clientData.setSurname(formSurname.getText().toString());
-            clientData.setPatronymic(formPatronymic.getText().toString());
-            clientData.setPhone(formPhone.getText().toString());
-            clientData.setEmail(hasEmail.isChecked() ? "none" : formEmail.getText().toString());
-            mViewModel.postClientData(requireActivity(), clientData);
-        });
     }
 
 }
