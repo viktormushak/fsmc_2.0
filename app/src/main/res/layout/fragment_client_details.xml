@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="5dp"
-    tools:context=".ui.clientlist.ClientListFragment">
+    tools:context=".ui.main.clients.ClientListFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_personal"

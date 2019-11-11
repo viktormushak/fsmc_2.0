@@ -1,11 +1,10 @@
 package com.fsmc.app.data.model;
 
 @SuppressWarnings("unused")
-public class Company {
+public class Brand {
 
     private String name;
-    private long lastUpdate;
-
+    private double quality;
 
     public String getName() {
         return name;
@@ -15,11 +14,11 @@ public class Company {
         this.name = name;
     }
 
-    public long getLastUpdate() {
-        return lastUpdate;
+    public double getQuality() {
+        return quality;
     }
 
-    public void setLastUpdate(long lastUpdate) {
-        this.lastUpdate = lastUpdate;
+    public void setQuality(double quality) {
+        this.quality = quality;
     }
 }
