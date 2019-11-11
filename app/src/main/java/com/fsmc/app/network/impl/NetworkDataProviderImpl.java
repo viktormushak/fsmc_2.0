@@ -7,15 +7,18 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
+import com.fsmc.app.data.model.Address;
 import com.fsmc.app.data.model.Client;
 import com.fsmc.app.data.model.ClientData;
 import com.fsmc.app.data.model.ClientDetails;
 import com.fsmc.app.data.model.Company;
 import com.fsmc.app.network.NetworkDataProvider;
+import com.fsmc.app.network.requests.GetClientAddressRequest;
 import com.fsmc.app.network.requests.GetClientDataRequest;
 import com.fsmc.app.network.requests.GetClientDetailsCachedRequest;
 import com.fsmc.app.network.requests.GetClientsCachedRequest;
 import com.fsmc.app.network.requests.GetCompaniesCachedRequest;
+import com.fsmc.app.network.requests.PostClientAddressRequest;
 import com.fsmc.app.network.requests.PostClientDataRequest;
 
 import java.util.HashMap;
@@ -75,5 +78,19 @@ public class NetworkDataProviderImpl implements NetworkDataProvider {
         HashMap<String, String> params = new HashMap<>();
         params.put("id", String.valueOf(clientId));
         getRequestQueue().add(new GetClientDataRequest(params, listener));
+    }
+
+    @Override
+    public void postClientAddress(int clientId, Address address, Response.Listener<Address> listener, Response.ErrorListener errorListener) {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("id", String.valueOf(clientId));
+        getRequestQueue().add(new PostClientAddressRequest(address, params, listener, errorListener));
+    }
+
+    @Override
+    public void loadClientAddressByClientId(int clientId, Response.Listener<Address> listener) {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("id", String.valueOf(clientId));
+        getRequestQueue().add(new GetClientAddressRequest(params, listener));
     }
 }

@@ -3,6 +3,7 @@ package com.fsmc.app.data.model;
 @SuppressWarnings("unused")
 public class Address {
 
+    public static final Address EMPTY = new Address();
     private String region;
     private String city;
     private String address;

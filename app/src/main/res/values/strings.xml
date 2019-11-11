@@ -8,4 +8,9 @@
     <string name="hint_email">Email</string>
     <string name="no_email_checkbox">email отсутствует</string>
     <string name="save_data_button">Сохранить</string>
+    <string name="address">Адрес</string>
+    <string name="personal">ФИО</string>
+    <string name="hint_region">Область</string>
+    <string name="hint_city">Город</string>
+    <string name="hint_street">Улица, дом</string>
 </resources>

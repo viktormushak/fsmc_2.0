@@ -1,6 +1,7 @@
 package com.fsmc.app.network;
 
 import com.android.volley.Response;
+import com.fsmc.app.data.model.Address;
 import com.fsmc.app.data.model.Client;
 import com.fsmc.app.data.model.ClientData;
 import com.fsmc.app.data.model.ClientDetails;
@@ -15,4 +16,6 @@ public interface NetworkDataProvider {
     void loadClientDetailsByClientId(int clientId, Response.Listener<ClientDetails> listener);
     void postClientData(ClientData clientData, Response.Listener<ClientData> listener, Response.ErrorListener errorListener);
     void loadClientDataByClientId(int integer, Response.Listener<ClientData> listener);
+    void postClientAddress(int clientId, Address address, Response.Listener<Address> listener, Response.ErrorListener errorListener);
+    void loadClientAddressByClientId(int clientId, Response.Listener<Address> listener);
 }
