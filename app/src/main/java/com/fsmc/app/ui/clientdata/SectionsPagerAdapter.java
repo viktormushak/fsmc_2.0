@@ -17,22 +17,18 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @StringRes
     private static final int[] TAB_TITLES = new int[]{R.string.personal, R.string.address};
-    private static Fragment[] fragments;
     private final Context mContext;
 
     SectionsPagerAdapter(Context context, FragmentManager fm) {
         super(fm, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         mContext = context;
-        fragments = new Fragment[]{
-                EditPersonalDataFragment.newInstance(((EditPersonActivity) context).getClientId()),
-                EditAddressFragment.newInstance(((EditPersonActivity) context).getClientId())
-        };
     }
 
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        return fragments[position];
+        return position == 0 ? EditPersonalDataFragment.newInstance(((EditPersonActivity) mContext).getClientId()) :
+                EditAddressFragment.newInstance(((EditPersonActivity) mContext).getClientId());
     }
 
     @Nullable
