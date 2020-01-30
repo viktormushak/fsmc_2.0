@@ -7,6 +7,8 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 
 public abstract class AbsFsmcRequest<R> extends Request<R> {
@@ -27,11 +29,15 @@ public abstract class AbsFsmcRequest<R> extends Request<R> {
         if (!params.isEmpty()){
             parametrizedUrlBuilder.append("?");
             for (HashMap.Entry<String, String> entry : params.entrySet()) {
-                parametrizedUrlBuilder
-                        .append(entry.getKey())
-                        .append("=")
-                        .append(entry.getValue())
-                        .append("&");
+                try {
+                    parametrizedUrlBuilder
+                            .append(entry.getKey())
+                            .append("=")
+                            .append(URLEncoder.encode(entry.getValue(), "UTF-8"))
+                            .append("&");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
             }
             parametrizedUrlBuilder.deleteCharAt(parametrizedUrlBuilder.lastIndexOf("&"));
         }
